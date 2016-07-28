@@ -1,4 +1,10 @@
 class DashboardController < ApplicationController
-  def index
+  def admin
+  end
+
+  def welcome
+  end
+
+  def room
   end
 end

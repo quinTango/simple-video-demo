@@ -1,4 +1,7 @@
 $(document).ready(function() {
+  if($(".videoContainer").length == 0 )
+    return
+
   // grab the room from the URL
   var room = location.search && location.search.split('?')[1];
 
