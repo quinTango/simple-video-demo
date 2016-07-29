@@ -40,6 +40,11 @@
       <h2>ADMINISTRADOR</h2>
 
       <h3 id="title">Start a room</h3>
+      <button id="muteBtn">Mute</button>
+      <button id="unmuteBtn">Unmute</button>
+
+      <button id="pauseBtn">Pause</button>
+      <button id="resumeBtn">Resume</button>
       <form id="createRoom">
         <input id="sessionInput"/>
         <button disabled type="submit">Create it!</button>
@@ -56,6 +61,25 @@
           if($(".videoContainer").length == 0 )
             return
 
+          $("#muteBtn").on("click", function() {
+            console.log("muted");
+            webrtc.mute();
+          });
+
+          $("#unmuteBtn").on("click", function() {
+            console.log("unmuted");
+            webrtc.unmute();
+          });
+
+          $("#pauseBtn").on("click", function() {
+            console.log("pause");
+            webrtc.pause();
+          });
+
+          $("#resumeBtn").on("click", function() {
+            console.log("resume");
+            webrtc.resume();
+          });
           // grab the room from the URL
           var room = location.search && location.search.split('?=')[1];
 
@@ -69,7 +93,8 @@
             autoRequestMedia: true,
             debug: false,
             detectSpeakingEvents: true,
-            autoAdjustMic: false
+            autoAdjustMic: false,
+            url: "http://localhost:8888"
           });
 
           // when it's ready, join if we got a room from the URL

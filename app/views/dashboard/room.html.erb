@@ -40,6 +40,8 @@
     <h2>Demo molona de live video</h2>
 
     <h3 id="title">Start a room</h3>
+    <button id="muteBtn">Mute</button>
+    <button id="unmuteBtn">Unmute</button>
     <form id="createRoom">
       <input id="sessionInput"/>
       <button disabled type="submit">Create it!</button>
@@ -56,6 +58,16 @@
         if($(".videoContainer").length == 0 )
           return
 
+        $("#muteBtn").on("click", function() {
+          console.log("muted");
+          webrtc.mute();
+        });
+
+        $("#unmuteBtn").on("click", function() {
+          console.log("unmuted");
+          webrtc.unmute();
+        });
+
         // grab the room from the URL
         var room = location.search && location.search.split('?=')[1];
 
@@ -70,7 +82,8 @@
           debug: false,
           detectSpeakingEvents: true,
           autoAdjustMic: false,
-          media: { video: false, audio: true }
+          media: { video: false, audio: true },
+          url: "http://localhost:8888"
         });
 
         // when it's ready, join if we got a room from the URL
