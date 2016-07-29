@@ -51,6 +51,7 @@
       <div id="remotes"></div>
       <hr>
       <script type="text/javascript">
+      var webrtc;
         $(document).ready(function() {
           if($(".videoContainer").length == 0 )
             return
@@ -59,7 +60,7 @@
           var room = location.search && location.search.split('?=')[1];
 
           // create our webrtc connection
-          var webrtc = new SimpleWebRTC({
+          webrtc = new SimpleWebRTC({
             // the id/element dom element that will hold "our" video
             localVideoEl: 'localVideo',
             // the id/element dom element that will hold remote videos
