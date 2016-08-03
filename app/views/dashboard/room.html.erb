@@ -58,16 +58,28 @@
         if($(".videoContainer").length == 0 )
           return
 
-        $("#muteBtn").on("click", function() {
-          console.log("muted");
-          webrtc.mute();
-        });
 
-        $("#unmuteBtn").on("click", function() {
-          console.log("unmuted");
-          webrtc.unmute();
-        });
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                                 navigator.mozGetUserMedia || navigator.msGetUserMedia ||
+                                 navigator.oGetUserMedia;
 
+        navigator.getUserMedia (
+          // constraints
+          // video: true,
+          {
+            audio: true
+          },
+
+          // successCallback
+          function(localMediaStream) {
+           console.log("accepted")
+          },
+
+          // errorCallback
+          function(err) {
+            console.log("Not accepted")
+          }
+        );
         // grab the room from the URL
         var room = location.search && location.search.split('?=')[1];
 
@@ -82,8 +94,28 @@
           debug: false,
           detectSpeakingEvents: true,
           autoAdjustMic: false,
-          media: { video: false, audio: true },
-          url: "http://localhost:8888"
+          media: { video: false, audio: true }
+        });
+
+        webrtc.on('mute', function (data) { // show muted symbol
+          webrtc.getPeers(data.id).forEach(function (peer) {
+            if (data.name == 'audio') {
+              $('#videocontainer_' + webrtc.getDomId(peer) + ' .muted').show();
+            } else if (data.name == 'video') {
+              $('#videocontainer_' + webrtc.getDomId(peer) + ' .paused').show();
+              $('#videocontainer_' + webrtc.getDomId(peer) + ' video').hide();
+            }
+          });
+        });
+
+        $("#muteBtn").on("click", function() {
+          console.log("muted");
+          webrtc.mute();
+        });
+
+        $("#unmuteBtn").on("click", function() {
+          console.log("unmuted");
+          webrtc.unmute();
         });
 
         // when it's ready, join if we got a room from the URL

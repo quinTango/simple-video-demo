@@ -33,6 +33,10 @@
       #localScreenContainer {
         display: none;
       }
+
+      #muted {
+        display: none;
+      }
     </style>
   </head>
     <body>
@@ -51,6 +55,7 @@
       </form>
       <p id="subTitle"></p>
       <hr>
+      <div id='muted'> Muted </div>
       <div id="localScreenContainer" class="videoContainer">
       </div>
       <div id="remotes"></div>
@@ -93,8 +98,31 @@
             autoRequestMedia: true,
             debug: false,
             detectSpeakingEvents: true,
-            autoAdjustMic: false,
-            url: "http://localhost:8888"
+            autoAdjustMic: false
+          });
+
+          webrtc.on('mute', function (data) { // show muted symbol
+            console.log("Muting");
+            webrtc.getPeers(data.id).forEach(function (peer) {
+              if (data.name == 'audio') {
+                $('#muted').show();
+              } else if (data.name == 'video') {
+                $('.videoContainer').show();
+                $('.videoContainer').hide();
+              }
+            });
+          });
+
+         webrtc.on('unmute', function (data) { // show muted symbol
+            console.log("Unmuting");
+            webrtc.getPeers(data.id).forEach(function (peer) {
+              if (data.name == 'audio') {
+                $('#muted').hide()
+              } else if (data.name == 'video') {
+                $('.videoContainer').show();
+                $('.videoContainer').hide();
+              }
+            });
           });
 
           // when it's ready, join if we got a room from the URL
